@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/OGSquall/RNG-Arena-1.21"
 	},
 	"license": "MIT",
 	"icon": "assets/rng-arena/icon.png",
