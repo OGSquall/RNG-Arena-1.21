@@ -1,3 +1,6 @@
 {
-  "generator.rng-arena.rng_arenas": "RNG Arenas"
+  "generator.rng-arena.rng_arenas": "RNG Arenas",
+  "rng-arena.lobby.welcome.title": "Welcome to RNG Arena!",
+  "rng-arena.lobby.welcome.subtitle": "Use /startarena to begin",
+  "rng-arena.lobby.welcome.action_bar": "Waiting in lobby..."
 }

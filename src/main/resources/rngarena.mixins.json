@@ -2,6 +2,9 @@
 	"required": true,
 	"package": "net.squall.rngarena.mixin",
 	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"client.InGameHudActionBarOffsetMixin"
+	],
 	"mixins": [
 		"ExampleMixin"
 	],
