@@ -13,8 +13,10 @@ import net.minecraft.world.PersistentState;
 public class RNGArenaWorldState extends PersistentState {
 	private static final String KEY_LOBBY_PLACED = "spawn_lobby_placed";
 	private static final String KEY_LOBBY_WELCOME_TEXT = "lobby_welcome_text_shown";
+	private static final String KEY_ARENA_TEST_PLACED = "arena_test_placed";
 
 	private boolean spawnLobbyPlaced;
+	private boolean arenaTestPlaced;
 	private final Set<UUID> lobbyWelcomeTextShown = new HashSet<>();
 
 	public static RNGArenaWorldState create() {
@@ -36,6 +38,7 @@ public class RNGArenaWorldState extends PersistentState {
 				}
 			}
 		}
+		state.arenaTestPlaced = nbt.getBoolean(KEY_ARENA_TEST_PLACED);
 		return state;
 	}
 
@@ -45,6 +48,15 @@ public class RNGArenaWorldState extends PersistentState {
 
 	public void setSpawnLobbyPlaced(boolean value) {
 		this.spawnLobbyPlaced = value;
+		this.markDirty();
+	}
+
+	public boolean isArenaTestPlaced() {
+		return this.arenaTestPlaced;
+	}
+
+	public void setArenaTestPlaced(boolean value) {
+		this.arenaTestPlaced = value;
 		this.markDirty();
 	}
 
@@ -68,6 +80,7 @@ public class RNGArenaWorldState extends PersistentState {
 			list.add(entry);
 		}
 		nbt.put(KEY_LOBBY_WELCOME_TEXT, list);
+		nbt.putBoolean(KEY_ARENA_TEST_PLACED, this.arenaTestPlaced);
 		return nbt;
 	}
 }

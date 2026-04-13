@@ -1,6 +1,16 @@
 {
-  "generator.rng-arena.rng_arenas": "RNG Arenas",
+  "generator.rng-arena.rng_arenas": "RNG Arena",
   "rng-arena.lobby.welcome.title": "Welcome to RNG Arena!",
   "rng-arena.lobby.welcome.subtitle": "Use /startarena to begin",
-  "rng-arena.lobby.welcome.action_bar": "Waiting in lobby..."
+  "rng-arena.lobby.welcome.action_bar": "Waiting in lobby...",
+  "rng-arena.command.startarena.success": "Arena countdown started.",
+  "rng-arena.command.startarena.already_running": "A round is already starting or in progress.",
+  "rng-arena.command.startarena.not_enough_players": "Need at least %s player(s) in the lobby to start.",
+  "rng-arena.command.returntolobby.success": "Returned to lobby.",
+  "rng-arena.game.countdown.chat": "Match starts in %s...",
+  "rng-arena.game.countdown.title": "%s",
+  "rng-arena.game.countdown.subtitle": "Get ready!",
+  "rng-arena.game.go.title": "GO!",
+  "rng-arena.game.go.subtitle": "Round is live",
+  "rng-arena.game.in_game.chat": "Round started — good luck!"
 }

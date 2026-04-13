@@ -12,6 +12,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import net.squall.rngarena.game.GameManager;
+import net.squall.rngarena.game.GameState;
 import net.squall.rngarena.world.RNGArenaWorld;
 import net.squall.rngarena.world.RNGArenaWorldState;
 
@@ -44,6 +46,10 @@ public final class LobbyWelcome {
 			}
 			MinecraftServer server = serverWorld.getServer();
 			if (server == null || server.getTicks() % ACTION_BAR_REFRESH_TICKS != 0) {
+				return;
+			}
+			GameManager gameManager = GameManager.get(server);
+			if (gameManager.getState() != GameState.LOBBY) {
 				return;
 			}
 			for (ServerPlayerEntity player : serverWorld.getPlayers()) {

@@ -28,6 +28,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.squall.rngarena.RNGArena;
+import net.squall.rngarena.arena.ArenaManager;
 import net.squall.rngarena.lobby.LobbyWelcome;
 
 public final class RNGArenaWorld {
@@ -61,6 +62,22 @@ public final class RNGArenaWorld {
 		);
 	}
 
+	/**
+	 * Teleports to the configured lobby player spawn (same as join/respawn), then refreshes lobby presentation.
+	 */
+	public static void teleportToLobbySpawn(ServerPlayerEntity player) {
+		MinecraftServer server = player.getServer();
+		if (server == null) {
+			return;
+		}
+		ServerWorld overworld = server.getOverworld();
+		if (overworld == null) {
+			return;
+		}
+		player.teleport(overworld, PLAYER_SPAWN_X, PLAYER_SPAWN_Y, PLAYER_SPAWN_Z, 0.0F, 0.0F);
+		LobbyWelcome.scheduleLobbyPresentation(player, false);
+	}
+
 	public static void initialize() {
 		LobbyWelcome.register();
 
@@ -70,6 +87,7 @@ public final class RNGArenaWorld {
 				if (overworld != null) {
 					overworld.setSpawnPos(PLAYER_SPAWN, 0.0F);
 					placeLobbyIfNeeded(server, overworld);
+					ArenaManager.get(server).attachOrPlace(server, overworld);
 				}
 			});
 		});

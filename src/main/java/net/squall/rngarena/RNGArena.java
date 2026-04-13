@@ -1,6 +1,10 @@
 package net.squall.rngarena;
 
 import net.fabricmc.api.ModInitializer;
+import net.squall.rngarena.arena.ArenaManager;
+import net.squall.rngarena.command.ReturnToLobbyCommand;
+import net.squall.rngarena.command.StartArenaCommand;
+import net.squall.rngarena.game.GameManager;
 import net.squall.rngarena.world.RNGArenaWorld;
 
 import org.slf4j.Logger;
@@ -12,6 +16,10 @@ public class RNGArena implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		GameManager.register();
+		ArenaManager.register();
+		StartArenaCommand.register();
+		ReturnToLobbyCommand.register();
 		RNGArenaWorld.initialize();
 	}
 }
