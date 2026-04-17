@@ -15,6 +15,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleFadeS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -24,6 +26,7 @@ import net.minecraft.world.World;
 import net.squall.rngarena.RNGArena;
 import net.squall.rngarena.arena.Arena;
 import net.squall.rngarena.arena.ArenaManager;
+import net.squall.rngarena.registry.RNGWeaponRegistry;
 import net.squall.rngarena.world.RNGArenaWorld;
 
 /**
@@ -124,19 +127,16 @@ public final class GameManager {
 			return;
 		}
 
-		List<UUID> orderedParticipants = new ArrayList<>(this.activePlayerIds);
-		Collections.sort(orderedParticipants);
-		for (int i = 0; i < orderedParticipants.size(); i++) {
-			ServerPlayerEntity player = this.server.getPlayerManager().getPlayer(orderedParticipants.get(i));
-			if (player == null) {
-				continue;
-			}
+		List<ServerPlayerEntity> orderedRoundPlayers = getOrderedRoundPlayers(overworld);
+		for (int i = 0; i < orderedRoundPlayers.size(); i++) {
+			ServerPlayerEntity player = orderedRoundPlayers.get(i);
 			BlockPos spawn = arena.getSpawnBlockPos(i);
 			double x = spawn.getX() + 0.5;
 			double y = spawn.getY();
 			double z = spawn.getZ() + 0.5;
 			player.teleport(overworld, x, y, z, 0.0F, 0.0F);
 		}
+		giveRandomWeaponsToPlayers(overworld, orderedRoundPlayers);
 
 		this.state = GameState.IN_GAME;
 		forEachOnlineParticipant(this.activePlayerIds, player -> {
@@ -145,6 +145,32 @@ public final class GameManager {
 			player.networkHandler.sendPacket(new SubtitleS2CPacket(Text.translatable("rng-arena.game.go.subtitle")));
 		});
 		broadcastToParticipants(Text.translatable("rng-arena.game.in_game.chat"));
+	}
+
+	private void giveRandomWeaponsToPlayers(ServerWorld world, List<ServerPlayerEntity> players) {
+		for (ServerPlayerEntity player : players) {
+			player.getInventory().clear();
+			player.getInventory().selectedSlot = 0;
+
+			Item randomWeapon = RNGWeaponRegistry.getRandomWeapon(world.getRandom());
+			player.getInventory().setStack(0, new ItemStack(randomWeapon));
+			player.currentScreenHandler.sendContentUpdates();
+			player.sendMessage(Text.literal("You received: ").append(randomWeapon.getName()), true);
+		}
+	}
+
+	private List<ServerPlayerEntity> getOrderedRoundPlayers(ServerWorld world) {
+		List<ServerPlayerEntity> players = new ArrayList<>();
+		List<UUID> orderedParticipants = new ArrayList<>(this.activePlayerIds);
+		Collections.sort(orderedParticipants);
+		for (UUID playerId : orderedParticipants) {
+			ServerPlayerEntity player = this.server.getPlayerManager().getPlayer(playerId);
+			if (player == null || !player.getWorld().getRegistryKey().equals(world.getRegistryKey()) || player.isSpectator()) {
+				continue;
+			}
+			players.add(player);
+		}
+		return players;
 	}
 
 	public void endGame() {

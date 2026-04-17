@@ -12,5 +12,7 @@
   "rng-arena.game.countdown.subtitle": "Get ready!",
   "rng-arena.game.go.title": "GO!",
   "rng-arena.game.go.subtitle": "Round is live",
-  "rng-arena.game.in_game.chat": "Round started — good luck!"
+  "rng-arena.game.in_game.chat": "Round started — good luck!",
+  "item.rng-arena.cactus_staff": "Cactus Staff",
+  "effect.rng-arena.pricked": "Pricked"
 }
