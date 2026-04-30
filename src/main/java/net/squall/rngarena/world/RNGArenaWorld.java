@@ -25,10 +25,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.squall.rngarena.RNGArena;
 import net.squall.rngarena.arena.ArenaManager;
+import net.squall.rngarena.game.GameManager;
 import net.squall.rngarena.lobby.LobbyWelcome;
 
 public final class RNGArenaWorld {
@@ -85,6 +87,7 @@ public final class RNGArenaWorld {
 			server.execute(() -> {
 				ServerWorld overworld = server.getOverworld();
 				if (overworld != null) {
+					applyArenaWorldGameRules(overworld, server);
 					overworld.setSpawnPos(PLAYER_SPAWN, 0.0F);
 					placeLobbyIfNeeded(server, overworld);
 					ArenaManager.get(server).attachOrPlace(server, overworld);
@@ -110,6 +113,10 @@ public final class RNGArenaWorld {
 			if (srv == null) {
 				return;
 			}
+			GameManager gameManager = GameManager.get(srv);
+			if (gameManager.shouldHandleInGameRespawn(newPlayer)) {
+				return;
+			}
 			ServerWorld overworld = srv.getOverworld();
 			if (overworld == null || newPlayer.getWorld() != overworld) {
 				return;
@@ -117,6 +124,11 @@ public final class RNGArenaWorld {
 			newPlayer.teleport(overworld, PLAYER_SPAWN_X, PLAYER_SPAWN_Y, PLAYER_SPAWN_Z, 0.0F, 0.0F);
 			LobbyWelcome.scheduleLobbyPresentation(newPlayer, false);
 		});
+	}
+
+	private static void applyArenaWorldGameRules(ServerWorld world, MinecraftServer server) {
+		// Ensure round deaths bypass the death screen so AFTER_RESPAWN spectatorship runs immediately.
+		world.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, server);
 	}
 
 	private static Optional<StructureTemplate> loadLobbyTemplate(ServerWorld world) {

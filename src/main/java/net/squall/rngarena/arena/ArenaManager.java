@@ -61,7 +61,7 @@ public final class ArenaManager {
 
 	/**
 	 * If the arena was already placed in this save, only attaches {@link Arena#setOrigin(BlockPos)}.
-	 * Otherwise loads the structure, loads chunks, places once, and persists the flag.
+	 * Otherwise, loads the structure, loads chunks, places once, and persists the flag.
 	 */
 	public void attachOrPlace(MinecraftServer server, ServerWorld overworld) {
 		RNGArenaWorldState worldState = RNGArenaWorld.persistentState(server);

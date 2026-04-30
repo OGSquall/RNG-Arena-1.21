@@ -13,6 +13,17 @@
   "rng-arena.game.go.title": "GO!",
   "rng-arena.game.go.subtitle": "Round is live",
   "rng-arena.game.in_game.chat": "Round started — good luck!",
+  "rng-arena.game.eliminated": "You were eliminated!",
+  "rng-arena.game.winner": "%s wins the round!",
+  "rng-arena.game.team_winner": "%s wins the round!",
+  "rng-arena.game.team.alpha": "Team Alpha",
+  "rng-arena.game.team.beta": "Team Beta",
+  "rng-arena.game.team.alpha.wins": "Team Alpha Wins!",
+  "rng-arena.game.team.beta.wins": "Team Beta Wins!",
+  "rng-arena.game.returning_to_lobby": "Returning to lobby...",
+  "rng-arena.game.draw.title": "Draw!",
+  "rng-arena.game.draw": "Round ended in a draw.",
   "item.rng-arena.cactus_staff": "Cactus Staff",
+  "item.rng-arena.helm_of_darkness": "Helm of Darkness",
   "effect.rng-arena.pricked": "Pricked"
 }
